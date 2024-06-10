@@ -16,6 +16,13 @@ const User = defineTable({
   }
 })
 
+const Category = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true }),
+    label: column.text({ unique: true }),
+  }
+})
+
 const Todo = defineTable({
   columns: {
     id: column.text({ primaryKey: true }),
@@ -26,12 +33,6 @@ const Todo = defineTable({
   }
 })
 
-const Category = defineTable({
-  columns: {
-    id: column.text({ primaryKey: true }),
-    label: column.text({ unique: true }),
-  }
-})
 
 export default defineDb({
   tables: {

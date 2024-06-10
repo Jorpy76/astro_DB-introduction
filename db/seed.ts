@@ -101,7 +101,7 @@ export default async function seed() {
       description:
         "Optimizar utilidades y scripts del proyecto para mejorar rendimiento.",
       user_id: "5",
-      category_id: "5",
+      category_id: "4",
     },
   ]);
 }

@@ -1,0 +1,90 @@
+---
+// Importaciones desde Astro Db
+import { db, Category, User, Todo } from "astro:db";
+
+if (Astro.request.method === "POST") {
+  //NOTE: Obtener los datos del formulario
+  const formData = await Astro.request.formData();
+  const title = formData.get("title");
+  const description = formData.get("description");
+  const category_id = formData.get("category_id");
+
+  console.log({ title, description, category_id });
+
+  if (
+    typeof title === "string" &&
+    typeof description === "string" &&
+    typeof category_id === "string"
+  ) {
+    await db.insert(Todo).values({ title, description, category_id, user_id: "1" });
+  }
+}
+
+const categories = await db.select().from(Category);
+// const users = await db.select().from(User
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Todo</title>
+  </head>
+
+  <body class="bg-[#090a15] py-12">
+    <div class="max-w-md mx-auto bg-white p-8 rounded shadow-md">
+      <h1 class="text-2xl font-bold mb-4">Create Todo</h1>
+      <form action="#" method="post">
+        <div class="mb-4">
+          <label for="title" class="block text-gray-700 font-semibold mb-2"
+            >Título:</label
+          >
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            placeholder="Elige un título"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="description"
+            class="block text-gray-700 font-semibold mb-2">Descripción:</label
+          >
+          <textarea
+            id="description"
+            name="description"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            placeholder="Ingresa una descripción"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="user" class="block text-gray-700 font-semibold mb-2"
+            >Categoría:</label
+          >
+          <select
+            id="category_id"
+            name="category_id"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          >
+            <option value="" disabled selected>Elige la categoría</option>
+            {
+              categories.map((category) => (
+                <option value={category.id}>{category.label}</option>
+              ))
+            }
+          </select>
+        </div>
+        <div class="flex justify-center">
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+            >Create Todo</button
+          >
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
